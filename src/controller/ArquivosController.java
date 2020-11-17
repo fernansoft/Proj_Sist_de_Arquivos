@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,8 +7,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
-import javax.swing.JOptionPane;
 
 public class ArquivosController implements IArquivosController {
     @Override
@@ -80,26 +77,27 @@ public class ArquivosController implements IArquivosController {
     public void insereCadastro(String arquivo, int codigo, String nome, String email) throws IOException {
         if (!verificaCadastro(arquivo, codigo)) {
             String conteudo = geraTxt(codigo, nome, email);
-            FileWriter fileWriter = new FileWriter(arquivo);
+            FileWriter fileWriter = new FileWriter(arquivo, true);
             PrintWriter print = new PrintWriter(fileWriter);
             print.write(conteudo);
             print.flush();
             print.close();
             fileWriter.close();
+            System.out.println("\r\nCadastro inserido com sucesso!\r\n");
         } else {
-            throw new IOException("Arquivo invalido!");
+            throw new IOException("Arquivo invalido ou codigo ja existente!");
         }
     }
 
     private String geraTxt(int codigo, String nome, String email) {
         StringBuffer buffer = new StringBuffer();
-        String linha = null;
-        linha = Integer.toString(codigo);
+        String linha = "";
+        linha = (Integer.toString(codigo));
         buffer.append(linha + ";");
         linha = nome;
         buffer.append(linha + ";");
         linha = email;
-        buffer.append(linha + ";");
+        buffer.append(linha + ";\r\n");
         return buffer.toString();
     }
 
